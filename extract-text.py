@@ -3,7 +3,7 @@ import os
 from operator import itemgetter
 
 # Path to your JSONL file
-file_path = "/Users/badawi/Desktop/test-json/libriheavy_cuts_small.jsonl"
+file_path = "/badawi/Desktop/test-json/libriheavy_cuts_small.jsonl"
 
 def extract_data_and_write_new_jsonl(file_path):
     # Read JSONL data into a list of dictionaries
