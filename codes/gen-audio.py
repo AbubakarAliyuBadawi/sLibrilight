@@ -38,38 +38,18 @@ def process_sub_chunk(text, processor, fastspeech2, mb_melgan, line_wavs, silenc
         input_ids = input_ids[:MAX_TOKEN_LENGTH]  # Force truncation if all else fails
     generate_speech(input_ids, fastspeech2, mb_melgan, line_wavs, silence)
 
-# def generate_speech(input_ids, fastspeech2, mb_melgan, line_wavs, silence):
-#     _, mel_after, _, _, _ = fastspeech2.inference(
-#         input_ids=tf.expand_dims(tf.convert_to_tensor(input_ids, dtype=tf.int32), 0),
-#         speaker_ids=tf.convert_to_tensor([0], dtype=tf.int32),
-#         speed_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
-#         f0_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
-#         energy_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
-#     )
-#     wav = mb_melgan.inference(mel_after)[0, :, 0]
-#     wav = resample(wav, int(len(wav) * SR / VOCODER_SR))
-#     line_wavs.append(wav)
-#     line_wavs.append(silence)  # Add a short silence after each sentence
-
 def generate_speech(input_ids, fastspeech2, mb_melgan, line_wavs, silence):
-    try:
-        _, mel_after, _, _, _ = fastspeech2.inference(
-            input_ids=tf.expand_dims(tf.convert_to_tensor(input_ids, dtype=tf.int32), 0),
-            speaker_ids=tf.convert_to_tensor([0], dtype=tf.int32),
-            speed_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
-            f0_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
-            energy_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
-        )
-        wav = mb_melgan.inference(mel_after)[0, :, 0]
-        wav = resample(wav, int(len(wav) * SR / VOCODER_SR))
-        line_wavs.append(wav)
-        line_wavs.append(silence)  # Add a short silence after each sentence
-    except tf.errors.InvalidArgumentError as e:
-        print(f"Error during model inference: {e}")
-        # Optionally, you can log this error to a file or take other recovery actions.
-    except Exception as e:
-        print(f"Unhandled exception: {e}")
-        # General exception catch, which could log or handle unexpected errors.
+    _, mel_after, _, _, _ = fastspeech2.inference(
+        input_ids=tf.expand_dims(tf.convert_to_tensor(input_ids, dtype=tf.int32), 0),
+        speaker_ids=tf.convert_to_tensor([0], dtype=tf.int32),
+        speed_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
+        f0_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
+        energy_ratios=tf.convert_to_tensor([1.0], dtype=tf.float32),
+    )
+    wav = mb_melgan.inference(mel_after)[0, :, 0]
+    wav = resample(wav, int(len(wav) * SR / VOCODER_SR))
+    line_wavs.append(wav)
+    line_wavs.append(silence)  # Add a short silence after each sentence
 
 def get_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
