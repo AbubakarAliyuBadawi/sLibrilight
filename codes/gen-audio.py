@@ -15,8 +15,8 @@ nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
 
 # Constants
-# DATA_CACHE_DIR = "/mundus/abadawi696/slibrilight/download/librilight/small"
-DATA_CACHE_DIR = "/mundus/abadawi696/slibrilight/slibrilight-medium/download/librilight/medium"
+DATA_CACHE_DIR = "/mundus/abadawi696/slibrilight/download/librilight/small"
+#DATA_CACHE_DIR = "/mundus/abadawi696/slibrilight/slibrilight-medium/download/librilight/medium"
 VOCODER_SR = 22050
 SR = 16000
 MAX_TOKEN_LENGTH = 2048  # This is your model's token limit
